@@ -1,2 +1,55 @@
 node_modules
 .env
+# Video formats
+*.mp4
+*.avi
+*.mkv
+*.mov
+*.wmv
+*.flv
+*.webm
+*.3gp
+*.3g2
+*.ogg
+
+# MPEG formats
+*.mpeg
+*.mpg
+*.m2v
+
+# DivX
+*.divx
+
+# Other video-related formats
+*.h264
+*.avc
+*.x264
+
+# Matroska
+*.mka
+
+# Windows Media Video
+*.wmv
+
+# Flash Video
+*.flv
+
+# QuickTime
+*.qt
+*.mov
+
+# OGG
+*.ogv
+
+# Thumbnails
+*.thumb
+*.thumbnails
+
+# Metadata
+*.meta
+
+# Any video-related files
+*.video
+
+# Any audio-related files
+*.audio
