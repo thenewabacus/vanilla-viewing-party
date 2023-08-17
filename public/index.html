@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Four Partitions Layout</title>
+    <link rel="stylesheet" href="index.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <input type="text" value="0000" name="roomidtxt" id="roomidtxt">
+        <input type="button"  id = "uploadmoviebtn"value="upload movies">
+        <input type="button" id = "selectmoviebtn" value="select movie">
+
+    </header>
+    <div class="container">
+        <div class="left-pane">
+            <div class="home-cameras">
+                <div class="home-other">
+                    <!-- poster="https://play.teleporthq.io/static/svg/videoposter.svg" -->
+                    <video class="camera-container" src="media/movie.mp4" class="home-video1"></video>
+                    <!-- <button class="home-button3 button">ToggleMic</button>
+                        <button class="home-button4 button">ToggleCamera</button> -->
+                    <!-- <div>
+                        <span class="home-text10">Activity Notification</span>
+                    </div> -->
+                </div>
+                <div class="home-akshat">
+                    <!-- poster="https://play.teleporthq.io/static/svg/videoposter.svg" -->
+                    <video class="camera-container" src="media/movie.mp4" class="home-video1"></video>
+                    <div id="controls">
+                        <button class="home-button5 button">ToggleMic</button>
+                        <button class="home-button6 button">ToggleCamera</button>
+                    </div>
+                    <div>
+                        <span class="home-text10">Activity Notification</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="home-iframe-container">
+                <div class="home-iframe-video-controller">
+                    <input type="image" title="Sync Video" src="images/sync.svg" style="height: 20px; width: 30px;"
+                        id="sync" name="sync">
+                    <input type="button" title="Pause" value="pause" style="height: 20px; width: 60px;" id="pause"
+                        name="pause">
+                    <input type="button" title="Play" value="play" style="height: 20px; width: 60px;" id="play"
+                        name="play">
+                    <input type="button" title="Stop" value="stop" style=" height: 20px; width: 60px;" id="stop"
+                        name="stop">
+                    <input type="button" title="Seek to 10%" value="10%" id="ten" name="ten">
+                    <input type="button" title="Seek to 30%" value="30%" id="thirty" name="thirty">
+                    <input type="button" title="Seek to 60%" value="60%" id="sixty" name="sixty">
+                    <input type="button" title="Seek to 90%" value="90%" id="ninty" name="ninty">
+                    <input type="image" title="minus15seconds" src="/images/minus15seconds.svg"
+                        style=" height: 20px; width: 30px;" id="minus15" name="minus15">
+                    <input type="image" title="minus10seconds" src="/images/minus10seconds.svg"
+                        style=" height: 20px; width: 30px;" id="minus10" name="minus10">
+                    <input type="image" title="minus5seconds" src="/images/minus5seconds.svg"
+                        style=" height: 20px; width: 30px;" id="minus5" name="minus5">
+                    <input type="image" title="plus5seconds" src="/images/plus5seconds.svg"
+                        style=" height: 20px; width: 30px;" id="plus5" name="plus5">
+                    <input type="image" title="plus10seconds" src="/images/plus10seconds.svg"
+                        style=" height: 20px; width: 30px;" id="plus10" name="plus10">
+                    <input type="image" title="plus15seconds" src="/images/plus15seconds.svg"
+                        style=" height: 20px; width: 30px;" id="plus15" name="plus15">
+                    <input type="text" title="enter value in seconds" class="customSeek" autocomplete="off"
+                        placeholder="enter time in seconds to seek" id="customSeek" name="customSeek">
+                </div>
+                <div id="movie-div-parent">
+
+                </div>
+                <!-- <iframe src="https://www.youtube.com/embed/DeQkMK5LME4" class="home-iframe"></iframe> -->
+                <!-- <div class="home-container1">
+                    <input type="radio" id="youtube-radio" onchange="youtube()" name="radio" class="home-radiobutton" />
+                    <label for="youtube-radio" class="home-text06">YouTube</label>
+                </div> -->
+
+                <div class="home-container2">
+                    <!-- onchange="movie()" -->
+                    <input type="radio" id="movie-radio" name="radio" class="home-radiobutton1" />
+                    <label for="movie-radio" class="home-text07"><span>Movie</span></label>
+                </div>
+
+            </div>
+        </div>
+        <div class="right-pane">
+            <div class="home-messages">
+                <input type="text" placeholder="placeholder" class="home-textinput1 input" id="messagetxt" />
+                <!-- <img src="https://play.teleporthq.io/static/svg/default-img.svg" alt="image" class="home-image7" /> -->
+            </div>
+        </div>
+    </div>
+    <!-- <footer>
+        <p>Footer</p>
+    </footer> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <script src="index.js"></script>
+    <script>
+
+    </script>
+</body>
+
+</html>

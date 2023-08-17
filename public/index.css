@@ -1,0 +1,102 @@
+* {
+    border: 2px solid #FF5733; 
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    text-align: center;
+    line-height: 0;
+}
+.container {
+    display: flex;
+    flex-wrap: wrap; /* Allow flex items to wrap on smaller screens */
+}
+.left-pane {
+    flex: 1;
+    background-color: #f0f0f0;
+    padding: 10px;
+}
+.right-pane {
+    flex: 0.5;
+    background-color: #f0f0f0;
+    padding: 10px;
+}
+.main-content {
+    flex: 2; /* Set main content to take up one-third of the width */
+    background-color: #fff;
+    padding: 10px;
+}
+/* footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1px;
+    flex-basis: 100%; 
+} */
+
+/* Media query for smaller screens (up to 600px) */
+@media (max-width: 600px) {
+    .left-pane, .right-pane, .main-content {
+        flex: 1 100%; /* Force each section to take the full width */
+    }
+    .left-pane {
+        order: 2; /* Move left pane to the top */
+    }
+    
+    .main-content {
+        order: 1; /* Move main content below the left pane */
+    }
+    .right-pane {
+        order: 3; /* Move right pane below the main content */
+    }
+}
+
+.camera-container {
+    width: 200px;
+    margin: 0 auto;
+}
+
+/* video {
+    width: 50%;
+    /* height: auto; */
+
+
+/* Media queries for responsiveness */
+@media screen and (min-width: 600px) {
+    .camera-container {
+        max-width: 400px;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    .camera-container {
+        max-width: 600px;
+    }
+}
+
+#player-div{
+    width: 50%;
+}
+.video-container {
+    border: 2px solid #ccc;
+    padding: 10px; /* Optional: Add padding around the video for better appearance */
+  }
+
+  /* Media queries for responsiveness */
+@media screen and (min-width: 600px) {
+    .video-container {
+        max-width: 100%;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    .video-container {
+        max-width: 600px;
+    }
+}
