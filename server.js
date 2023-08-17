@@ -1,52 +1,117 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+require('dotenv').config()
+const express = require("express")
+const SocketConnection = require('./services/socket')
+const { createServer } = require("http")
+const { Server } = require("socket.io")
+const app = express()
+const cookieParser = require('cookie-parser')
+const cors = require("cors")
+const path = require('path')
+const fs = require('fs').promises;
+const httpServer = createServer(app)
 
-const port = 3000; // You can change the port number to any available port you prefer
+let origins = { origin: process.env.HOST }
 
-const server = http.createServer((req, res) => {
-  // Get the URL and remove any query parameters
-  const url = req.url.split('?')[0];
+const socketServer = new Server(httpServer, {
+  cors: {
+    origin: origins, methods: ["GET", "POST"]
+  }
+})
+module.exports = { socketServer }
+SocketConnection(socketServer)
+app.use(cookieParser())
+app.use(express.urlencoded({ extended: true }))
+app.use(cors())
+app.use(express.json())
+app.use(express.static(__dirname));
 
-  // Define the path to the src/ directory
-  const publicPath = path.join(__dirname, 'src');
+// const io = new Server(server);
 
-  // Map the requested URL to the corresponding file path
-  const filePath = path.join(publicPath, url === '/' ? 'index.html' : url);
+const port = process.env.PORT || 3000
 
-  // Check if the file exists
-  fs.access(filePath, fs.constants.F_OK, (err) => {
-    if (err) {
-      // File not found, return 404 status
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.end('404 Not Found');
-    } else {
-      // Read the file and serve it to the client
-      fs.readFile(filePath, (err, content) => {
-        if (err) {
-          // Error reading the file, return 500 status
-          res.writeHead(500, { 'Content-Type': 'text/plain' });
-          res.end('500 Internal Server Error');
-        } else {
-          // Determine the content type based on the file extension
-          const ext = path.extname(filePath);
-          let contentType = 'text/html';
-          if (ext === '.css') {
-            contentType = 'text/css';
-          } else if (ext === '.js') {
-            contentType = 'text/javascript';
-          }
+let morgan = require("morgan")
 
-          // Set the content type in the response header
-          res.writeHead(200, { 'Content-Type': contentType });
-          res.end(content);
-        }
-      });
-    }
-  });
-});
+app.use(morgan("dev"))
+SocketConnection(socketServer)
+app.use(cookieParser())
+app.use(express.urlencoded({ extended: true }))
+app.use(cors())
+app.use(express.json())
+app.use(express.static("public"))
+app.get('/getMovieList', async (req, res) => {
+  let result = await readMedia()
+  return res.status(200).json({result})
+})
+/**
+ * 
+ * @todo
+ * 
+ * fix the folder path
+ */
+const folderPath = path.join(__dirname, '/public/media')
+console.log(folderPath)
+async function readMedia(folderPath) {
+  try {
+    const files = await fs.readdir('/root/vfe/public/media');
 
-// Start the server
-server.listen(port,() => {
-  console.log(`Server running on http://localhost:${port}`);
+    const filesList = files.map(file => {
+      return path.join('/root/vfe/public/media', file);
+    });
+
+    return filesList;
+  } catch (err) {
+    console.error('Error reading directory:', err);
+    throw err;
+  }
+}
+(async () => {
+  const rootDirectory = '/root/vfe/public/media';
+
+  try {
+    const filesList = await readMedia(rootDirectory);
+    console.log('Files in the media directory:', filesList);
+  } catch (err) {
+    console.error('Error:', err);
+  }
+})();
+
+// app.get('/', async (req, res) => {
+//   return res.status(200).json({ message: "ok" })
+// })
+
+// io.on('connection', (socket) => {
+
+//   socket.on('movie', () => {
+//     console.log('movie event received');
+//     io.emit('movie');
+//   });
+//   socket.on('synctime', () => {
+//     console.log('synctime event received');
+//     io.emit('movie');
+//   });
+//   socket.on('play', () => {
+//     console.log('play event received ');
+//     io.emit('play');
+//   });
+//   socket.on('pause', () => {
+//     console.log('pause event received ');
+//     io.emit('pause');
+//   });
+//   socket.on('stop', () => {
+//     console.log('stop event received ');
+//     io.emit('stop');
+//   });
+
+// });
+
+
+
+
+app.use(function (req, res, next) {
+  return res.status(404).json({ err: 'resource not found' })
+})
+
+
+httpServer.listen(process.env.PORT, () => {
+  console.log('listening on http://localhost:' + process.env.PORT);
 });
