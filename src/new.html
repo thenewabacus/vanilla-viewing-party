@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Camera Track in Video Element</title>
+</head>
+<body>
+  <label for="cameraSelect">Select Camera:</label>
+  <select id="cameraSelect"></select>
+  <br>
+  <video id="videoElement" width="640" height="480" autoplay></video>
+  <button onclick="stopCamera()">Stop Camera</button>
+
+  <script>
+    let stream; // Declare a variable to store the camera stream globally
+
+    async function setupCamera() {
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoSelect = document.getElementById('cameraSelect');
+
+        // Clear the previous options
+        while (videoSelect.firstChild) {
+          videoSelect.removeChild(videoSelect.firstChild);
+        }
+
+        // Populate the dropdown with available camera options
+        devices.forEach(device => {
+          if (device.kind === 'videoinput') {
+            const option = document.createElement('option');
+            option.value = device.deviceId;
+            option.text = device.label || `Camera ${videoSelect.length + 1}`;
+            videoSelect.appendChild(option);
+          }
+        });
+
+        // Listen for changes in the camera selection
+        videoSelect.onchange = () => {
+          stopCamera(); // Stop the current camera stream (if any)
+          const selectedDeviceId = videoSelect.value;
+          startCamera(selectedDeviceId); // Start the selected camera stream
+        };
+
+      } catch (error) {
+        console.error('Error accessing the camera:', error);
+      }
+    }
+
+    async function startCamera(deviceId) {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId } });
+        const videoElement = document.getElementById('videoElement');
+
+        if ("srcObject" in videoElement) {
+          videoElement.srcObject = stream;
+        } else {
+          videoElement.src = window.URL.createObjectURL(stream);
+        }
+
+        videoElement.onloadedmetadata = function (e) {
+          videoElement.play();
+        };
+      } catch (error) {
+        console.error('Error accessing the camera:', error);
+      }
+    }
+
+    function stopCamera() {
+      if (stream) {
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+        stream = null; // Reset the global stream variable
+      }
+    }
+
+    window.onload = () => {
+      setupCamera();
+    };
+  </script>
+</body>
+</html>
