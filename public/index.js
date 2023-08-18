@@ -1,6 +1,8 @@
 let roomidtxt = document.getElementById("roomidtxt")
 let selectmoviebtn = document.getElementById("selectmoviebtn")
 let uploadmoviebtn = document.getElementById("uploadmoviebtn")
+let socket = io()
+
 let adjectives = [
     "adorable",
     "adventurous",
@@ -496,16 +498,37 @@ let thirty = document.getElementById("thirty");
 let sixty = document.getElementById("sixty");
 let ninty = document.getElementById("ninty");
 let syncBtn = document.getElementById("sync");
+let dropdowncontent = document.getElementById("dropdown-content")
+
+let movieList = []
+let dropdownHTML = "";
+
+
+window.onload = async (event) => {
+    let dropdownHTML = "";
+    const prefixToRemove = "/root/vfe/public/media/";
+    movieList = await fetchMovies()
+    for (const movieTitle of movieList.result) {
+        const modifiedTitle = movieTitle.replace(prefixToRemove, "");
+        const fileNameWithoutExtension = modifiedTitle.split('.').slice(0, -1).join('.');
+
+        dropdownHTML += `<a id="${fileNameWithoutExtension}">${modifiedTitle}</a>`;
+    }
+    // console.log(movieList)
+    dropdowncontent.innerHTML = dropdownHTML
+};
 
 let player
 let playerExists = ""
 let videoPath = "../media/Teach me STATISTICS in half an hour! Seriously..mp4"
+
 /**
  * @todo
  * working on seeing and selecting video to play
  * 
  */
-selectmoviebtn.addEventListener('click', async function () {
+
+async function fetchMovies() {
     console.log('fetching movies list')
     const response = await fetch("http://localhost:3000/getMovieList", {
         method: "GET",
@@ -514,10 +537,9 @@ selectmoviebtn.addEventListener('click', async function () {
             // You can add any necessary headers here
         }
     });
-
     const data = await response.json();
-    console.log("API response:", data);
-})
+    return data
+}
 function movie() {
     console.log('movieInvokked')
     if (playerExists == 'player-div') {
@@ -539,12 +561,13 @@ function movie() {
         })
     }
 }
-let condition = 1
-let socket = io()
-if (condition == 0) {
-    socket.emit('chat message', input.value);
-    input.value = '';
-}
+let messagesDiv = document.getElementById("messagesDiv")
+console.log(messagesDiv)
+socket.on('newMessage', (data) => {
+    console.log("got new message")
+       let messageList = "<li>" + data.message + "</li>";
+       messagesDiv.innerHTML += messageList//"<div>messssage<div>"
+});
 
 socket.on('seekPlus10', (seekPlus10, plus10Press) => {
     if (seekPlus10 == 'seekPlus10') {
@@ -833,14 +856,12 @@ function scrollToBottom(id) {
 
 let roomid = null
 function joinRoom() {
-    //randomly generate room id of 8 digits with alphabets and numbers
-    //dandomly generate username of random words 
+
     console.log(roomid)
     username = generateUsername()
     console.log(roomid, username)
     socket.emit('joinRoom', { roomid, username })
 
-    // window.location.href.replace('roomid', roomid)
 }
 
 function generateUsername() {
@@ -850,18 +871,11 @@ function generateUsername() {
     return randomUsername;
 }
 
-// function joinRoom() {
-//     const socket = io('http://localhost');
-//     console.log(socket)
-//     return () => {
-//         socket.disconnect();
-//     };
-// }
-
 let messagetxt = document.getElementById('messagetxt')
 function sendMessage() {
-    messageVal = messagetxt.value
-    socket.emit('message', { roomid: roomid, message: messageVal });
+    console.log("sendingf message")
+    let messageVal = messagetxt.value
+    socket.emit('sendMessage', { roomid: roomid, message: messageVal });
 }
 messagetxt.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
