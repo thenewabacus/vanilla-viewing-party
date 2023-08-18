@@ -53,3 +53,4 @@ node_modules
 
 # Any audio-related files
 *.audio
+*.mp3
