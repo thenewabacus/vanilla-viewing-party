@@ -64,38 +64,6 @@ async function readMedia(folderPath) {
   }
 })();
 
-// app.get('/', async (req, res) => {
-//   return res.status(200).json({ message: "ok" })
-// })
-
-// io.on('connection', (socket) => {
-
-//   socket.on('movie', () => {
-//     console.log('movie event received');
-//     io.emit('movie');
-//   });
-//   socket.on('synctime', () => {
-//     console.log('synctime event received');
-//     io.emit('movie');
-//   });
-//   socket.on('play', () => {
-//     console.log('play event received ');
-//     io.emit('play');
-//   });
-//   socket.on('pause', () => {
-//     console.log('pause event received ');
-//     io.emit('pause');
-//   });
-//   socket.on('stop', () => {
-//     console.log('stop event received ');
-//     io.emit('stop');
-//   });
-
-// });
-
-
-
-
 app.use(function (req, res, next) {
   return res.status(404).json({ err: 'resource not found' })
 })
