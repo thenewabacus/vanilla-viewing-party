@@ -34,13 +34,12 @@ function SocketConnection(socketServer) {
             }
         });
         socket.on('sendMessage', (data) => {
-            ROOMID = data.roomid
-            Message = data.message
+            console.log(data.message)
             console.log(socket.roomid)
             // socket.in(data.roomid).emit('receiveMessage', data, socket.id)
-            socket.to(socket.roomid).emit("newMessage", {
+            socket.in(socket.roomid).emit("newMessage", {
                 sender: socket.id,
-                message: message
+                message: data.message
             });
         })
         socket.on('movie', (data) => {
