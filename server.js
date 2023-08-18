@@ -19,24 +19,13 @@ const socketServer = new Server(httpServer, {
 })
 module.exports = { socketServer }
 SocketConnection(socketServer)
-app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 app.use(express.json())
-app.use(express.static(__dirname));
-
-// const io = new Server(server);
-
 const port = process.env.PORT || 3000
-
 let morgan = require("morgan")
-
 app.use(morgan("dev"))
-SocketConnection(socketServer)
 app.use(cookieParser())
-app.use(express.urlencoded({ extended: true }))
-app.use(cors())
-app.use(express.json())
 app.use(express.static("public"))
 app.get('/getMovieList', async (req, res) => {
   let result = await readMedia()
