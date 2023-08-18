@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser')
 const cors = require("cors")
 const path = require('path')
 const fs = require('fs').promises;
+const fsSync = require('fs');
 const httpServer = createServer(app)
 
 let origins = { origin: process.env.HOST }
@@ -29,13 +30,31 @@ app.use(cookieParser())
 app.use(express.static("public"))
 app.get('/getMovieList', async (req, res) => {
   let result = await readMedia()
-  return res.status(200).json({result})
+  return res.status(200).json({ result })
 })
 /**
  * 
  * @todo
  * 
  * fix the folder path
+ * fix upload bug, err
+ * node:_http_outgoing:648
+    throw new ERR_HTTP_HEADERS_SENT('set');
+    ^
+
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at new NodeError (node:internal/errors:405:5)
+    at ServerResponse.setHeader (node:_http_outgoing:648:11)
+    at ServerResponse.header (/root/vfe/node_modules/express/lib/response.js:794:10)
+    at ServerResponse.send (/root/vfe/node_modules/express/lib/response.js:174:12)
+    at ServerResponse.json (/root/vfe/node_modules/express/lib/response.js:278:15)
+    at IncomingMessage.<anonymous> (/root/vfe/server.js:76:30)
+    at IncomingMessage.emit (node:events:514:28)
+    at addChunk (node:internal/streams/readable:324:12)
+    at readableAddChunk (node:internal/streams/readable:297:9)
+    at Readable.push (node:internal/streams/readable:234:10) {
+  code: 'ERR_HTTP_HEADERS_SENT'
+}
  */
 const folderPath = path.join(__dirname, '/public/media')
 console.log(folderPath)
@@ -65,10 +84,17 @@ async function readMedia(folderPath) {
 })();
 
 app.use(function (req, res, next) {
-  res.sendFile('public/notFound.html', {root: __dirname })
+  res.sendFile('public/notFound.html', { root: __dirname })
 })
-
-
+httpServer.on("request", (req, res) => {
+  if (req.url === "/upload") {
+    const fileName = 'public/media/' + req.headers["file-name"];
+    req.on("data", chunk => {
+      fsSync.appendFileSync(fileName, chunk)
+      return res.status(201).json({ response: 'ok' })
+    })
+  }
+})
 httpServer.listen(process.env.PORT, () => {
   console.log('listening on http://localhost:' + process.env.PORT);
 });
