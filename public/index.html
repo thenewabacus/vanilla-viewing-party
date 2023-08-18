@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Four Partitions Layout</title>
+    <title>Viewing Party</title>
     <link rel="stylesheet" href="index.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
 </head>
@@ -12,8 +12,17 @@
 <body>
     <header>
         <input type="text" value="0000" name="roomidtxt" id="roomidtxt">
-        <input type="button"  id = "uploadmoviebtn"value="upload movies">
-        <input type="button" id = "selectmoviebtn" value="select movie">
+        <input type="button"  id = "uploadmoviebtn" value="upload movies">
+        
+        <div class="dropdown">
+            <input type="button" id = "selectmoviebtn" value="select movie">
+            <!-- <button class="dropbtn">Dropdown</button> -->
+            <div class="dropdown-content" id="dropdown-content">
+              <!-- <a href="#">Link 1</a>
+              <a href="#">Link 2</a>
+              <a href="#">Link 3</a> -->
+            </div>
+          </div>
 
     </header>
     <div class="container">
@@ -89,8 +98,8 @@
             </div>
         </div>
         <div class="right-pane">
-            <div class="home-messages">
-                <input type="text" placeholder="placeholder" class="home-textinput1 input" id="messagetxt" />
+            <div class="home-messages" id="messagesDiv">
+                <input type="text" placeholder="press enter to send messsage" class="home-textinput1 input" id="messagetxt" />
                 <!-- <img src="https://play.teleporthq.io/static/svg/default-img.svg" alt="image" class="home-image7" /> -->
             </div>
         </div>
@@ -100,9 +109,6 @@
     </footer> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <script src="index.js"></script>
-    <script>
-
-    </script>
 </body>
 
 </html>
