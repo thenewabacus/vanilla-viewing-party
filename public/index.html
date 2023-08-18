@@ -12,17 +12,23 @@
 <body>
     <header>
         <input type="text" value="0000" name="roomidtxt" id="roomidtxt">
-        <input type="button"  id = "uploadmoviebtn" value="upload movies">
-        
+        File: <input type='file' id='f'>
+        <button id='btnUpload'>Read & Upload</button>
+        <input type="button" id='pause' value="resumed">
+
+        <div id='divOutput'>
+
+        </div>
+
         <div class="dropdown">
-            <input type="button" id = "selectmoviebtn" value="select movie">
+            <input type="button" id="selectmoviebtn" value="select movie">
             <!-- <button class="dropbtn">Dropdown</button> -->
             <div class="dropdown-content" id="dropdown-content">
-              <!-- <a href="#">Link 1</a>
+                <!-- <a href="#">Link 1</a>
               <a href="#">Link 2</a>
               <a href="#">Link 3</a> -->
             </div>
-          </div>
+        </div>
 
     </header>
     <div class="container">
@@ -99,7 +105,8 @@
         </div>
         <div class="right-pane">
             <div class="home-messages" id="messagesDiv">
-                <input type="text" placeholder="press enter to send messsage" class="home-textinput1 input" id="messagetxt" />
+                <input type="text" placeholder="press enter to send messsage" class="home-textinput1 input"
+                    id="messagetxt" />
                 <!-- <img src="https://play.teleporthq.io/static/svg/default-img.svg" alt="image" class="home-image7" /> -->
             </div>
         </div>
