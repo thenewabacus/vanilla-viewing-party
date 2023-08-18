@@ -58,58 +58,54 @@ function SocketConnection(socketServer) {
             socketServer.to(data.roomid).emit('vibrate', { data, socketid: socket.id })
         });
         socket.on('stopVibration', (stopvib) => {
-            socketServer.emit('stopVibration', stopvib)
+            socketServer.to(socket.roomid)('stopVibration', stopvib)
         });
         socket.on('seekPlus5', (seekPlus5, plus5Press) => {
-            socketServer.emit('seekPlus5', seekPlus5, plus5Press)
+            socketServer.to(socket.roomid)('seekPlus5', seekPlus5, plus5Press)
         });
         socket.on('seekPlus10', (seekPlus10, plus10Press) => {
-            socketServer.emit('seekPlus10', seekPlus10, plus10Press)
+            socketServer.to(socket.roomid)('seekPlus10', seekPlus10, plus10Press)
         });
         socket.on('seekPlus15', (seekPlus15, plus15Press) => {
-            socketServer.emit('seekPlus15', seekPlus15, plus15Press)
+            socketServer.to(socket.roomid)('seekPlus15', seekPlus15, plus15Press)
         });
         socket.on('seekMinus5', (seekMinus5, minus5Press) => {
-            socketServer.emit('seekMinus5', seekMinus5, minus5Press)
+            socketServer.to(socket.roomid)('seekMinus5', seekMinus5, minus5Press)
         });
         socket.on('seekMinus10', (seekMinus10, minus10Press) => {
-            socketServer.emit('seekMinus10', seekMinus10, minus10Press)
+            socketServer.to(socket.roomid)('seekMinus10', seekMinus10, minus10Press)
         });
         socket.on('seekMinus15', (seekMinus15, minus15Press) => {
-            socketServer.emit('seekMinus15', seekMinus15, minus15Press)
+            socketServer.to(socket.roomid)('seekMinus15', seekMinus15, minus15Press)
         });
         socket.on('customSeek', (customSeek, customSeekLog) => {
-            socketServer.emit('customSeek', customSeek, customSeekLog)
+            socketServer.to(socket.roomid)('customSeek', customSeek, customSeekLog)
 
         });
         socket.on('tenthPart', (tenthPart, percentSeekLog) => {
-            socketServer.emit('tenthPart', tenthPart, percentSeekLog)
+            socketServer.to(socket.roomid)('tenthPart', tenthPart, percentSeekLog)
         });
         socket.on('thirtiethPart', (thirtiethPart, percentSeekLog) => {
-            socketServer.emit('thirtiethPart', thirtiethPart, percentSeekLog)
+            socketServer.to(socket.roomid)('thirtiethPart', thirtiethPart, percentSeekLog)
         });
         socket.on('sixtiethPart', (sixtiethPart, percentSeekLog) => {
-            socketServer.emit('sixtiethPart', sixtiethPart, percentSeekLog)
+            socketServer.to(socket.roomid)('sixtiethPart', sixtiethPart, percentSeekLog)
         });
         socket.on('nintiethPart', (nintiethPart, percentSeekLog) => {
-            socketServer.emit('nintiethPart', nintiethPart, percentSeekLog)
+            socketServer.to(socket.roomid)('nintiethPart', nintiethPart, percentSeekLog)
         });
         socket.on('pause', (pause, pauseLog) => {
-            socketServer.emit('pause', pause, pauseLog)
+            socketServer.to(socket.roomid)('pause', pause, pauseLog)
         });
         socket.on('play', (play, playLog) => {
-            socketServer.emit('play', play, playLog)
+            socketServer.to(socket.roomid)('play', play, playLog)
         });
         socket.on('stop', (stop, stopLog) => {
-            socketServer.emit('stop', stop, stopLog)
+            socketServer.to(socket.roomid)('stop', stop, stopLog)
         });
         socket.on('syncTime', (syncTime, syncPress) => {
-            socketServer.emit('syncTime', syncTime, syncPress);
+            socketServer.to(socket.roomid)('syncTime', syncTime, syncPress);
         });
-        socket.on('vidFromClient', (vidFromClient) => {
-            console.log(vidFromClient)
-            socketServer.emit('vidFromServer', vidFromClient)
-        })
     });
 }
 
