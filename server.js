@@ -65,7 +65,7 @@ async function readMedia(folderPath) {
 })();
 
 app.use(function (req, res, next) {
-  return res.status(404).json({ err: 'resource not found' })
+  res.sendFile('public/notFound.html', {root: __dirname })
 })
 
 
