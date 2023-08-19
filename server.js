@@ -37,24 +37,9 @@ app.get('/getMovieList', async (req, res) => {
  * @todo
  * 
  * fix the folder path
- * fix upload bug, err
- * node:_http_outgoing:648
-    throw new ERR_HTTP_HEADERS_SENT('set');
-    ^
-
-Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
-    at new NodeError (node:internal/errors:405:5)
-    at ServerResponse.setHeader (node:_http_outgoing:648:11)
-    at ServerResponse.header (/root/vfe/node_modules/express/lib/response.js:794:10)
-    at ServerResponse.send (/root/vfe/node_modules/express/lib/response.js:174:12)
-    at ServerResponse.json (/root/vfe/node_modules/express/lib/response.js:278:15)
-    at IncomingMessage.<anonymous> (/root/vfe/server.js:76:30)
-    at IncomingMessage.emit (node:events:514:28)
-    at addChunk (node:internal/streams/readable:324:12)
-    at readableAddChunk (node:internal/streams/readable:297:9)
-    at Readable.push (node:internal/streams/readable:234:10) {
-  code: 'ERR_HTTP_HEADERS_SENT'
-}
+ * fix the 404 path, it conflicts with other routes
+ *  gets: err hhttp headers already sent
+ * 
  */
 const folderPath = path.join(__dirname, '/public/media')
 console.log(folderPath)
@@ -82,10 +67,6 @@ async function readMedia(folderPath) {
     console.error('Error:', err);
   }
 })();
-
-// app.post('/upload', (req, res) => {
-//   console.log('hooooooooooooooooooooOOOOOOOOOOOOOO')
-// })
 
 
 app.post('/upload', async function (req, res) {
