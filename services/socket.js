@@ -57,53 +57,53 @@ function SocketConnection(socketServer) {
             socketServer.to(data.roomid).emit('vibrate', { data, socketid: socket.id })
         });
         socket.on('stopVibration', (stopvib) => {
-            socketServer.to(socket.roomid)('stopVibration', stopvib)
+            socketServer.to(socket.roomid).emit('stopVibration', stopvib)
         });
         socket.on('seekPlus5', (seekPlus5, plus5Press) => {
-            socketServer.to(socket.roomid)('seekPlus5', seekPlus5, plus5Press)
+            socketServer.to(socket.roomid).emit('seekPlus5', seekPlus5, plus5Press)
         });
         socket.on('seekPlus10', (seekPlus10, plus10Press) => {
-            socketServer.to(socket.roomid)('seekPlus10', seekPlus10, plus10Press)
+            socketServer.to(socket.roomid).emit('seekPlus10', seekPlus10, plus10Press)
         });
         socket.on('seekPlus15', (seekPlus15, plus15Press) => {
-            socketServer.to(socket.roomid)('seekPlus15', seekPlus15, plus15Press)
+            socketServer.to(socket.roomid).emit('seekPlus15', seekPlus15, plus15Press)
         });
         socket.on('seekMinus5', (seekMinus5, minus5Press) => {
-            socketServer.to(socket.roomid)('seekMinus5', seekMinus5, minus5Press)
+            socketServer.to(socket.roomid).emit('seekMinus5', seekMinus5, minus5Press)
         });
         socket.on('seekMinus10', (seekMinus10, minus10Press) => {
-            socketServer.to(socket.roomid)('seekMinus10', seekMinus10, minus10Press)
+            socketServer.to(socket.roomid).emit('seekMinus10', seekMinus10, minus10Press)
         });
         socket.on('seekMinus15', (seekMinus15, minus15Press) => {
-            socketServer.to(socket.roomid)('seekMinus15', seekMinus15, minus15Press)
+            socketServer.to(socket.roomid).emit('seekMinus15', seekMinus15, minus15Press)
         });
         socket.on('customSeek', (customSeek, customSeekLog) => {
-            socketServer.to(socket.roomid)('customSeek', customSeek, customSeekLog)
+            socketServer.to(socket.roomid).emit('customSeek', customSeek, customSeekLog)
 
         });
         socket.on('tenthPart', (tenthPart, percentSeekLog) => {
-            socketServer.to(socket.roomid)('tenthPart', tenthPart, percentSeekLog)
+            socketServer.to(socket.roomid).emit('tenthPart', tenthPart, percentSeekLog)
         });
         socket.on('thirtiethPart', (thirtiethPart, percentSeekLog) => {
-            socketServer.to(socket.roomid)('thirtiethPart', thirtiethPart, percentSeekLog)
+            socketServer.to(socket.roomid).emit('thirtiethPart', thirtiethPart, percentSeekLog)
         });
         socket.on('sixtiethPart', (sixtiethPart, percentSeekLog) => {
-            socketServer.to(socket.roomid)('sixtiethPart', sixtiethPart, percentSeekLog)
+            socketServer.to(socket.roomid).emit('sixtiethPart', sixtiethPart, percentSeekLog)
         });
         socket.on('nintiethPart', (nintiethPart, percentSeekLog) => {
-            socketServer.to(socket.roomid)('nintiethPart', nintiethPart, percentSeekLog)
+            socketServer.to(socket.roomid).emit('nintiethPart', nintiethPart, percentSeekLog)
         });
         socket.on('pause', (pause, pauseLog) => {
-            socketServer.to(socket.roomid)('pause', pause, pauseLog)
+            socketServer.to(socket.roomid).emit('pause', pause, pauseLog)
         });
         socket.on('play', (play, playLog) => {
-            socketServer.to(socket.roomid)('play', play, playLog)
+            socketServer.to(socket.roomid).emit('play', play, playLog)
         });
         socket.on('stop', (stop, stopLog) => {
-            socketServer.to(socket.roomid)('stop', stop, stopLog)
+            socketServer.to(socket.roomid).emit('stop', stop, stopLog)
         });
         socket.on('syncTime', (syncTime, syncPress) => {
-            socketServer.to(socket.roomid)('syncTime', syncTime, syncPress);
+            socketServer.to(socket.roomid).emit('syncTime', syncTime, syncPress);
         });
     });
 }
