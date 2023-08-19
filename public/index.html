@@ -6,12 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viewing Party</title>
     <link rel="stylesheet" href="index.css">
+    <link rel="shortcut icon" href="images/sorryBow.png" type="image/x-png">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
 </head>
 
 <body>
     <header>
         <input type="text" value="0000" name="roomidtxt" id="roomidtxt">
+        <div>
+            <button onclick="createRoom()">Create Room</button>
+            <button onclick="joinRoom()">Join Room</button>
+        </div>
         File: <input type='file' id='f'>
         <button id='btnUpload'>Read & Upload</button>
         <input type="button" id='pause' value="resumed">
@@ -22,7 +27,6 @@
 
         <div class="dropdown">
             <input type="button" id="selectmoviebtn" value="select movie">
-            <!-- <button class="dropbtn">Dropdown</button> -->
             <div class="dropdown-content" id="dropdown-content">
                 <!-- <a href="#">Link 1</a>
               <a href="#">Link 2</a>
@@ -35,23 +39,26 @@
         <div class="left-pane">
             <div class="home-cameras">
                 <div class="home-other">
-                    <!-- poster="https://play.teleporthq.io/static/svg/videoposter.svg" -->
-                    <video class="camera-container" src="media/movie.mp4" class="home-video1"></video>
-                    <!-- <button class="home-button3 button">ToggleMic</button>
-                        <button class="home-button4 button">ToggleCamera</button> -->
-                    <!-- <div>
-                        <span class="home-text10">Activity Notification</span>
-                    </div> -->
+
+                    <video id="remote-video" class="camera-container" autoplay></video>
+                    <div>
+                        <span class="home-text10">Activity status</span>
+                    </div>
                 </div>
                 <div class="home-akshat">
-                    <!-- poster="https://play.teleporthq.io/static/svg/videoposter.svg" -->
-                    <video class="camera-container" src="media/movie.mp4" class="home-video1"></video>
+                    <video id="local-video" class="camera-container" autoplay></video>
+                    <!-- 
+                    ==> populate the dropdown with connected camera's list
+                     -->
                     <div id="controls">
+                        <label for="cameraSelect">Select Camera:</label>
+                        <select id="cameraSelect"></select>
+                        <br>
                         <button class="home-button5 button">ToggleMic</button>
                         <button class="home-button6 button">ToggleCamera</button>
                     </div>
                     <div>
-                        <span class="home-text10">Activity Notification</span>
+                        <span class="home-text10">activity status</span>
                     </div>
                 </div>
             </div>
@@ -89,31 +96,21 @@
                 <div id="movie-div-parent">
 
                 </div>
-                <!-- <iframe src="https://www.youtube.com/embed/DeQkMK5LME4" class="home-iframe"></iframe> -->
-                <!-- <div class="home-container1">
-                    <input type="radio" id="youtube-radio" onchange="youtube()" name="radio" class="home-radiobutton" />
-                    <label for="youtube-radio" class="home-text06">YouTube</label>
-                </div> -->
-
                 <div class="home-container2">
-                    <!-- onchange="movie()" -->
                     <input type="radio" id="movie-radio" name="radio" class="home-radiobutton1" />
                     <label for="movie-radio" class="home-text07"><span>Movie</span></label>
                 </div>
-
             </div>
         </div>
         <div class="right-pane">
             <div class="home-messages" id="messagesDiv">
                 <input type="text" placeholder="press enter to send messsage" class="home-textinput1 input"
                     id="messagetxt" />
-                <!-- <img src="https://play.teleporthq.io/static/svg/default-img.svg" alt="image" class="home-image7" /> -->
             </div>
         </div>
     </div>
-    <!-- <footer>
-        <p>Footer</p>
-    </footer> -->
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
     <script src="index.js"></script>
 </body>
