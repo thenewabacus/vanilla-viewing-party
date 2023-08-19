@@ -12,7 +12,7 @@ function SocketConnection(socketServer) {
         socket.on("joinRoom", (data) => {
             console.log('got room');
             socket.join(data.roomid);
-            socket.roomid = data.roomid.toString();
+            socket.roomid = data.roomid//.toString();
             // socket.roomid = data.roomid;
         
             if (!roomsData[data.roomid]) {
