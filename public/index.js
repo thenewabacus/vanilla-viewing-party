@@ -510,14 +510,11 @@ async function upload(file) {
                 },
                 "body": chunk
             });
-            console.log(response)
             if (response.status === 201) {
-                console.log('response 201')
                 lastChunkIDUploaded = chunkId;
                 // console.log('lastuploadedchunkid', lastChunkIDUploaded);
                 divOutput.textContent = `${lastChunkIDUploaded} uploaded out of ${chunkCount}`;
             } else {
-                console.log(response.status)
                 divOutput.textContent = `${chunkId} uploaded out of ${chunkCount}, couldn't upload further`;
                 return
             }
