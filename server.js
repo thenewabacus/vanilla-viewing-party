@@ -10,7 +10,7 @@ const path = require('path')
 const fs = require('fs').promises;
 const fsSync = require('fs');
 const httpServer = createServer(app)
-
+let headersSent = false
 let origins = { origin: process.env.HOST }
 
 const socketServer = new Server(httpServer, {
@@ -83,17 +83,31 @@ async function readMedia(folderPath) {
   }
 })();
 
+// app.post('/upload', (req, res) => {
+//   console.log('hooooooooooooooooooooOOOOOOOOOOOOOO')
+// })
+
+
+app.post('/upload', async function (req, res) {
+  console.log('got request==========')
+  const fileName = 'public/media/' + req.headers["file-name"];
+  console.log(fileName)
+  
+  let dataReceived = Buffer.alloc(0);
+  
+  req.on("data", chunk => {
+    console.log('got data======')
+    dataReceived = Buffer.concat([dataReceived, chunk]);
+  });
+  
+  req.on('end', () => {
+    fsSync.appendFileSync(fileName, dataReceived);
+    return res.status(201).json({ response: 'ok' });
+  });
+});
 app.use(function (req, res, next) {
   res.sendFile('public/notFound.html', { root: __dirname })
-})
-httpServer.on("request", (req, res) => {
-  if (req.url === "/upload") {
-    const fileName = 'public/media/' + req.headers["file-name"];
-    req.on("data", chunk => {
-      fsSync.appendFileSync(fileName, chunk)
-      return res.status(201).json({ response: 'ok' })
-    })
-  }
+  next()
 })
 httpServer.listen(process.env.PORT, () => {
   console.log('listening on http://localhost:' + process.env.PORT);
