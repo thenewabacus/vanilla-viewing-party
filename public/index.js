@@ -38,7 +38,6 @@ window.onload = async (event) => {
         const fileNameWithoutExtension = modifiedTitle.split('.').slice(0, -1).join('.')//.trim();
         dropdownHTML += `<a onclick="loadMovie('../media/${modifiedTitle}')" id="${fileNameWithoutExtension}">${modifiedTitle}</a>`;
     }
-    // console.log(movieList)
     dropdowncontent.innerHTML = dropdownHTML
 };
 let videoPath = null //"../media/Teach me STATISTICS in half an hour! Seriously..mp4"
@@ -53,7 +52,7 @@ let playerExists = ""
 
 /**
  * @todo
- * working on seeing and selecting video to play
+ * work on user experience
  * 
  */
 
@@ -63,7 +62,6 @@ async function fetchMovies() {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            // You can add any necessary headers here
         }
     });
     const data = await response.json();
@@ -383,15 +381,137 @@ function scrollToBottom(id) {
     console.log('scrollToBottom executed');
 }
 
-let roomid = null
+
+var room_id;
+var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+var local_stream;
+var screenStream;
+var peer = null;
+var currentPeer = null
+var screenSharing = false
+
+function setLocalStream(stream) {
+    let video = document.getElementById("local-video");
+    video.srcObject = stream;
+    video.muted = true;
+    console.log('set local stream')
+    video.play();
+}
+
+function setRemoteStream(stream) {
+    let video = document.getElementById("remote-video");
+    video.srcObject = stream;
+    console.log('set remote stream')
+    video.play();
+}
+function createRoom() {
+    console.log("Creating Room")
+    let roomid = document.getElementById("roomidtxt").value;
+    console.log(roomid)
+    username = generateUsername()
+    console.log(roomid, username)
+    if (roomid == " " || roomid == "") {
+        alert(" enter roomid")
+        return;
+    }
+    room_id = roomid
+    peer = new Peer(room_id)
+    peer.on('open', (id) => {
+        console.log(" Connected with id: ", id)
+        getUserMedia({ video: true, audio: true }, (stream) => {
+            local_stream = stream;
+            setLocalStream(local_stream)
+        }, (err) => {
+            console.log(err)
+        })
+    })
+    peer.on('call', (call) => {
+        call.answer(local_stream);
+        call.on('stream', (stream) => {
+            setRemoteStream(stream)
+        })
+        currentPeer = call;
+    })
+    socket.emit('joinRoom', { roomid, username })
+
+}
+
 function joinRoom() {
+    console.log("JOINED ROOM")
+    let roomid = document.getElementById("roomidtxt").value;
 
     console.log(roomid)
     username = generateUsername()
     console.log(roomid, username)
+    if (roomid == " " || roomid == "") {
+        alert(" enter room")
+        return;
+    }
+    room_id = roomid
+    peer = new Peer()
+    peer.on('open', (id) => {
+        console.log("Connected with id: " + id)
+        getUserMedia({ video: true, audio: true }, (stream) => {
+            local_stream = stream;
+            setLocalStream(local_stream)
+            let call = peer.call(room_id, stream)
+            call.on('stream', (stream) => {
+                setRemoteStream(stream);
+            })
+            currentPeer = call;
+        }, (err) => {
+            console.log(err)
+        })
+
+    })
     socket.emit('joinRoom', { roomid, username })
 
 }
+/**
+ * 
+ * @todo
+ * to run screenshare stop the movie, and replace it with the screenshare video
+ * 
+ */
+
+
+// function startScreenShare() {
+//     if (screenSharing) {
+//         stopScreenSharing()
+//     }
+//     navigator.mediaDevices.getDisplayMedia({ video: true }).then((stream) => {
+//         screenStream = stream;
+//         let videoTrack = screenStream.getVideoTracks()[0];
+//         videoTrack.onended = () => {
+//             stopScreenSharing()
+//         }
+//         if (peer) {
+//             let sender = currentPeer.peerConnection.getSenders().find(function (s) {
+//                 return s.track.kind == videoTrack.kind;
+//             })
+//             sender.replaceTrack(videoTrack)
+//             screenSharing = true
+//         }
+//         console.log(screenStream)
+//     })
+// }
+
+
+
+// function stopScreenSharing() {
+//     if (!screenSharing) return;
+//     let videoTrack = local_stream.getVideoTracks()[0];
+//     if (peer) {
+//         let sender = currentPeer.peerConnection.getSenders().find(function (s) {
+//             return s.track.kind == videoTrack.kind;
+//         })
+//         sender.replaceTrack(videoTrack)
+//     }
+//     screenStream.getTracks().forEach(function (track) {
+//         track.stop();
+//     });
+//     screenSharing = false
+// }
 
 function generateUsername() {
     let randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
@@ -432,9 +552,6 @@ const pauseBtn = document.getElementById("pause");
 
 const f = document.getElementById("f");
 pauseBtn.addEventListener("click", function () {
-    // if (isResumed) {
-    plusOne = 1
-
     // console.log(lastChunkIDUploaded, 'sdfsdfsd')
 
     isResumed = !isResumed
