@@ -10,8 +10,7 @@ const path = require('path')
 const fs = require('fs').promises;
 const fsSync = require('fs');
 const httpServer = createServer(app)
-let headersSent = false
-let origins = { origin: process.env.HOST }
+let origins = { origin: process.env.SOURCE }
 
 const socketServer = new Server(httpServer, {
   cors: {
@@ -28,27 +27,34 @@ let morgan = require("morgan")
 app.use(morgan("dev"))
 app.use(cookieParser())
 app.use(express.static("public"))
+const folderPath = path.join(__dirname, '/public/media')
+
 app.get('/getMovieList', async (req, res) => {
-  let result = await readMedia()
+  let result = await readMedia(folderPath)
   return res.status(200).json({ result })
 })
 /**
  * 
  * @todo
+ * username should be generated server side
+ * make the uploads parallel
  * 
- * fix the folder path
- * fix the 404 path, it conflicts with other routes
- *  gets: err hhttp headers already sent
+ * 
+ * add authhentication
+ *  add accessRights to the files
+ * 
+ * store messges to temporary database
+ * 
+ * add user activity tracking
  * 
  */
-const folderPath = path.join(__dirname, '/public/media')
-console.log(folderPath)
 async function readMedia(folderPath) {
+
   try {
-    const files = await fs.readdir('/root/vfe/public/media');
+    const files = await fs.readdir(folderPath);
 
     const filesList = files.map(file => {
-      return path.join('/root/vfe/public/media', file);
+      return path.join(folderPath, file);
     });
 
     return filesList;
@@ -58,8 +64,7 @@ async function readMedia(folderPath) {
   }
 }
 (async () => {
-  const rootDirectory = '/root/vfe/public/media';
-
+  const rootDirectory = folderPath;
   try {
     const filesList = await readMedia(rootDirectory);
     console.log('Files in the media directory:', filesList);
@@ -68,28 +73,34 @@ async function readMedia(folderPath) {
   }
 })();
 
+const privateKey = fsSync.readFileSync(process.env.PRIVATE_KEY, 'utf8');
+const certificate = fsSync.readFileSync(process.env.CECRTIFICATE, 'utf8');
+const ca = fsSync.readFileSync(process.env.CA, 'utf8');
 
+const credentials = {
+	key: privateKey,
+	cert: certificate,
+	ca: ca
+};
 app.post('/upload', async function (req, res) {
-  console.log('got request==========')
   const fileName = 'public/media/' + req.headers["file-name"];
   console.log(fileName)
-  
   let dataReceived = Buffer.alloc(0);
-  
   req.on("data", chunk => {
-    console.log('got data======')
     dataReceived = Buffer.concat([dataReceived, chunk]);
   });
-  
+
   req.on('end', () => {
     fsSync.appendFileSync(fileName, dataReceived);
     return res.status(201).json({ response: 'ok' });
   });
 });
-app.use(function (req, res, next) {
-  res.sendFile('public/notFound.html', { root: __dirname })
-  next()
-})
+
+
 httpServer.listen(process.env.PORT, () => {
-  console.log('listening on http://localhost:' + process.env.PORT);
+  console.log(`listening on localhost:` + process.env.PORT);
+});
+const httpsServer = https.createServer(credentials, app);
+httpsServer.listen(443, () => {
+	console.log('HTTPS Server running on port 443');
 });
