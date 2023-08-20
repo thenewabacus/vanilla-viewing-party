@@ -4,7 +4,6 @@ let roomsData = {};
 //         "socketid": "username"
 //     }
 // }
-// const socketServer = require('./server')
 function SocketConnection(socketServer) {
     socketServer.on('connection', (socket) => {
         console.log(socket.id, 'a user connected');
@@ -13,14 +12,13 @@ function SocketConnection(socketServer) {
             console.log('got room');
             socket.join(data.roomid);
             socket.roomid = data.roomid//.toString();
-            // socket.roomid = data.roomid;
-        
+
             if (!roomsData[data.roomid]) {
                 roomsData[data.roomid] = {};
             }
-        
+
             roomsData[data.roomid][socket.id] = data.username;
-        
+
             console.log('roomsData', roomsData);
         });
         socket.on("disconnect", () => {
@@ -42,15 +40,11 @@ function SocketConnection(socketServer) {
                 message: data.message
             });
         })
-        socket.on('movie', (data) => {
-            ROOMID = data.roomid
-            console.log(ROOMID,'------');
-            // socketServer.emit('movie');
-            socketServer.in(socket.roomid).emit('movie')
-            // socket.emit("movie", {
-            //     sender: socket.id,
-            //     message: message
-            // });
+        socket.on('sendMovie', (data) => {
+            roomid = data.roomid
+            console.log(data, '-------------------');
+            socketServer.in(socket.roomid).emit('newMovie', { videoPath: data.videoPath })
+          
         });
         socket.on('vibrate', (data) => {
             console.log('received and emited vibrate', data)
