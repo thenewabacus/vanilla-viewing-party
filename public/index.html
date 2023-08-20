@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viewing Party</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="styles/index.css">
     <link rel="shortcut icon" href="images/sorryBow.png" type="image/x-png">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
 </head>
@@ -40,13 +40,13 @@
             <div class="home-cameras">
                 <div class="home-other">
 
-                    <video id="remote-video" class="camera-container" autoplay></video>
+                    <video preload="none" id="remote-video" class="camera-container" autoplay></video>
                     <div>
                         <span class="home-text10">Activity status</span>
                     </div>
                 </div>
                 <div class="home-akshat">
-                    <video id="local-video" class="camera-container" autoplay></video>
+                    <video preload="none" id="local-video" class="camera-container" autoplay></video>
                     <!-- 
                     ==> populate the dropdown with connected camera's list
                      -->
@@ -106,13 +106,19 @@
             <div class="home-messages" id="messagesDiv">
                 <input type="text" placeholder="press enter to send messsage" class="home-textinput1 input"
                     id="messagetxt" />
+                    <div id="messageListdiv"></div>
+                <input type="button" value="send message" id="messagesendbtn" onclick="sendMessage()">
             </div>
         </div>
     </div>
     <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
-    <script src="index.js"></script>
+    <script src="scripts/definitions.js"></script>
+    <script src="scripts/unameDictionary.js"></script>
+
+    <script src="scripts/socket.js"></script>
+    <script src="scripts/index.js"></script>
 </body>
 
 </html>
