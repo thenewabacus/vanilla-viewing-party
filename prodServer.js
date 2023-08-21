@@ -11,8 +11,8 @@ const fs = require('fs').promises;
 const fsSync = require('fs');
 //DONOT CHANGE BELOW CODE
 const https = require('https');
-const privateKey = fsSync.readFileSync(process.env.PRIVATE_KEY, 'utf    8');
-const certificate = fsSync.readFileSync(process.env.CECRTIFICATE, 'u    tf8');
+const privateKey = fsSync.readFileSync(process.env.PRIVATE_KEY, 'utf8');
+const certificate = fsSync.readFileSync(process.env.CECRTIFICATE, 'utf8');
 const ca = fsSync.readFileSync(process.env.CA, 'utf8');
 const credentials = {
   key: privateKey,
