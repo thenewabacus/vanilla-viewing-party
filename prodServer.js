@@ -1,7 +1,7 @@
 require('dotenv').config()
+
 const express = require("express")
 const SocketConnection = require('./services/socket')
-const { createServer } = require("http")
 const { Server } = require("socket.io")
 const app = express()
 const cookieParser = require('cookie-parser')
@@ -9,14 +9,25 @@ const cors = require("cors")
 const path = require('path')
 const fs = require('fs').promises;
 const fsSync = require('fs');
-const httpServer = createServer(app)
+//DONOT CHANGE BELOW CODE
+const https = require('https');
+const privateKey = fsSync.readFileSync(process.env.PRIVATE_KEY, 'utf    8');
+const certificate = fsSync.readFileSync(process.env.CECRTIFICATE, 'u    tf8');
+const ca = fsSync.readFileSync(process.env.CA, 'utf8');
+const credentials = {
+  key: privateKey,
+  cert: certificate,
+  ca: ca
+};
+const httpsServer = https.createServer(credentials, app);
 let origins = { origin: process.env.SOURCE }
 
-const socketServer = new Server(httpServer, {
+const socketServer = new Server(httpsServer, {
   cors: {
     origin: origins, methods: ["GET", "POST"]
   }
 })
+//DONOT CHANGE ABOVE CODE
 module.exports = { socketServer }
 SocketConnection(socketServer)
 app.use(express.urlencoded({ extended: true }))
@@ -34,20 +45,20 @@ app.get('/getMovieList', async (req, res) => {
   return res.status(200).json({ result })
 })
 /**
- * 
- * @todo
- * username should be generated server side
- * make the uploads parallel
- * 
- * 
- * add authhentication
- *  add accessRights to the files
- * 
- * store messges to temporary database
- * 
- * add user activity tracking
- * 
- */
+48  *
+49  * @todo
+50  * username should be generated server side
+51  * make the uploads parallel
+52  *
+53  *
+54  * add authhentication
+55  *  add accessRights to the files
+56  *
+57  * store messges to temporary database
+58  *
+59  * add user activity tracking
+60  *
+61  */
 async function readMedia(folderPath) {
 
   try {
@@ -73,15 +84,6 @@ async function readMedia(folderPath) {
   }
 })();
 
-const privateKey = fsSync.readFileSync(process.env.PRIVATE_KEY, 'utf8');
-const certificate = fsSync.readFileSync(process.env.CECRTIFICATE, 'utf8');
-const ca = fsSync.readFileSync(process.env.CA, 'utf8');
-
-const credentials = {
-	key: privateKey,
-	cert: certificate,
-	ca: ca
-};
 app.post('/upload', async function (req, res) {
   const fileName = 'public/media/' + req.headers["file-name"];
   console.log(fileName)
@@ -95,12 +97,9 @@ app.post('/upload', async function (req, res) {
     return res.status(201).json({ response: 'ok' });
   });
 });
-
-
-httpServer.listen(process.env.PORT, () => {
-  console.log(`listening on localhost:` + process.env.PORT);
-});
-const httpsServer = https.createServer(credentials, app);
+app.use(express.static(__dirname, { dotfiles: 'allow' }));
+//DONOT CHANGE
 httpsServer.listen(443, () => {
-	console.log('HTTPS Server running on port 443');
+  console.log('HTTPS Server running on port 443');
 });
+//DONOT CHANGE 
