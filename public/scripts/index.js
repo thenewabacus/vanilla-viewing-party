@@ -25,12 +25,15 @@ window.onload = async (event) => {
 
     movieList.result.forEach(item => {
         const folderPath = item.folderPath;
+        console.log(folderPath)
         const file = item.file;
         const fileNameWithoutExtension = file.split('.').slice(0, -1).join('.')//.trim();
         console.log(fileNameWithoutExtension)
-        let path = folderPath + '\\\\' + file
+        let fixedFilePath = folderPath.replace(/\\/g, "\\\\");
+        // console.log(fixedFilePath)
+        let path = fixedFilePath + '\\\\' + file
         dropdownHTML += `<a onclick="loadMovie('${path}')" id="${fileNameWithoutExtension}">${file}</a>`;
-        console.log(`${path}`)
+        console.log(`${path}`, 'paaaaaaaaaaaaaaths')
     });
     console.log(movieList.result)
     dropdownContent.innerHTML = dropdownHTML
@@ -38,7 +41,7 @@ window.onload = async (event) => {
 
 
 function loadMovie(p) {
-console.log(p,'==========')
+    console.log(p, '==========')
     console.log('inside movie laading')
     videoPath = p
     console.log(videoPath)
@@ -64,6 +67,7 @@ async function fetchMovies() {
 }
 
 function movie(path) {
+    console.log(path)
     console.log('movieInvokked')
     if (playerExists == 'player-div') {
         console.log('alredy')
@@ -76,7 +80,7 @@ function movie(path) {
 
         document.getElementById('movie-div-parent').appendChild(playerdiv)
         player = new Clappr.Player({
-            source: path,
+            source: path.toString(),
             // mimeType: 'video/mp4',
             parentId: "#player-div",
             height: "300px",
