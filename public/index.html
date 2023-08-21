@@ -7,15 +7,17 @@
     <title>Viewing Party</title>
     <link rel="stylesheet" href="styles/index.css">
     <link rel="shortcut icon" href="images/sorryBow.png" type="image/x-png">
+    <meta name="description" content="viewing party with shared controls, no need to ask to pause">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
 </head>
 
 <body>
     <header>
-        <input type="text" value="0000" name="roomidtxt" id="roomidtxt">
         <div>
-            <button onclick="createRoom()">Create Room</button>
-            <button onclick="joinRoom()">Join Room</button>
+            <label for="roomidtxt">Enter room Number</label>
+            <input type="text"placeholder="Enter room Number" required value="0000" name="roomidtxt" id="roomidtxt">
+            <button id="createRoom" onclick="createRoom()">Create Room</button>
+            <button id="joinRoom" onclick="joinRoom()">Join Room</button>
         </div>
         File: <input type='file' id='f'>
         <button id='btnUpload'>Read & Upload</button>
@@ -106,7 +108,7 @@
             <div class="home-messages" id="messagesDiv">
                 <input type="text" placeholder="press enter to send messsage" class="home-textinput1 input"
                     id="messagetxt" />
-                    <div id="messageListdiv"></div>
+                <div id="messageListdiv"></div>
                 <input type="button" value="send message" id="messagesendbtn" onclick="sendMessage()">
             </div>
         </div>

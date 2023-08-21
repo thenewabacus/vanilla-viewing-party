@@ -2,7 +2,7 @@
  * @HEADER
  */
 let roomidTxt = document.getElementById("roomidtxt");
-let dropdowncontent = document.getElementById("dropdown-content")
+let dropdownContent = document.getElementById("dropdown-content")
 let selectmovieBtn = document.getElementById("selectmoviebtn")
 const f = document.getElementById("f");
 let uploadBtn = document.getElementById("btnUpload");

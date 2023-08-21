@@ -9,3 +9,7 @@ another user enters the same room id
             joins the room
         else
             false
+
+
+index.html
+if create room clikced disable join room

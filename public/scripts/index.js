@@ -16,33 +16,35 @@ let lastChunkIDUploaded = 0
 let result = null
 let plusOne = 0
 let videoPath = null //"../media/Teach me STATISTICS in half an hour! Seriously..mp4"
-
+const mediaFolder = '../media/'
 window.onload = async (event) => {
     let dropdownHTML = "";
-    const prefixToRemove = "/root/vfe/public/media/";
+    // console.log(__dirname)
     movieList = await fetchMovies()
-    for (const movieTitle of movieList.result) {
-        const modifiedTitle = movieTitle.replace(prefixToRemove, "");
-        const fileNameWithoutExtension = modifiedTitle.split('.').slice(0, -1).join('.')//.trim();
-        dropdownHTML += `<a onclick="loadMovie('../media/${modifiedTitle}')" id="${fileNameWithoutExtension}">${modifiedTitle}</a>`;
-    }
-    dropdowncontent.innerHTML = dropdownHTML
+
+
+    movieList.result.forEach(item => {
+        const folderPath = item.folderPath;
+        const file = item.file;
+        const fileNameWithoutExtension = file.split('.').slice(0, -1).join('.')//.trim();
+        console.log(fileNameWithoutExtension)
+        let path = folderPath + '\\\\' + file
+        dropdownHTML += `<a onclick="loadMovie('${path}')" id="${fileNameWithoutExtension}">${file}</a>`;
+        console.log(`${path}`)
+    });
+    console.log(movieList.result)
+    dropdownContent.innerHTML = dropdownHTML
 };
 
 
 function loadMovie(p) {
-
+console.log(p,'==========')
     console.log('inside movie laading')
     videoPath = p
     console.log(videoPath)
 }
 
-function check(){
-    console.log(videoPath)
-}
-setTimeout(() => {
-    check()
-}, 10000);
+
 /**
  * @todo
  * work on user experience
@@ -85,7 +87,7 @@ function movie(path) {
 
 movieRadio.addEventListener('click', () => {
     console.log('movie event emited')
-    console.log(videoPath,'=========================')
+    console.log(videoPath, '=========================')
     socket.emit('sendMovie', { roomid, videoPath });
 })
 
@@ -278,6 +280,7 @@ function setRemoteStream(stream) {
     video.play();
 }
 function createRoom() {
+    document.getElementById('joinRoom').disabled = true
     roomid = roomidTxt.value;
     console.log("Creating Room")
     username = generateUsername()
@@ -308,6 +311,8 @@ function createRoom() {
 }
 
 function joinRoom() {
+    document.getElementById('createRoom').disabled = true
+
     console.log("JOINED ROOM")
     roomid = roomidTxt.value;
     console.log(roomid)
