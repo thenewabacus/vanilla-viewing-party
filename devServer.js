@@ -54,7 +54,7 @@ async function readMedia(folderPath) {
     const files = await fs.readdir(folderPath);
 
     const filesList = files.map(file => {
-      return path.join(folderPath, file);
+      return {folderPath, file}
     });
 
     return filesList;
